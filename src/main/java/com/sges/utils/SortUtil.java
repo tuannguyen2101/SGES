@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 
-import com.sges.request.entity.OrderBy;
+import com.sges.dto.OrderBy;
 
-public class SortUtils {
+public class SortUtil {
 	public static List<Sort.Order> buildOrders(List<OrderBy> orders) {
         if (AssertionUtil.isNullOrEmpty(orders))
             return new ArrayList<Sort.Order>();

@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import com.sges.request.entity.OrderBy;
+import com.sges.dto.OrderBy;
+import com.sges.dto.Paging;
 
 public interface GenericService <T, ID>{
 	
@@ -24,11 +25,15 @@ public interface GenericService <T, ID>{
 
     boolean existsById(ID key);
 
+    List<T> queryAllAndSort(List<OrderBy> orderBys);
+
     List<T> findByExample(T e);
 
     List<T> findLimit(int numberSkip, int limit);
 
     Page<T> findPage(int numberSkip, int limit, List<OrderBy> orderBys);
+
+    Object queryByExamplePageAndSort(T e, Paging pageInfo, List<OrderBy> orderBys);
 
     List<T> findAll();
 	

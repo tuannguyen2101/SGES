@@ -1,4 +1,4 @@
-package com.sges.request.entity;
+package com.sges.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
