@@ -24,6 +24,9 @@ public class GenericController<T, ID> {
 	@Autowired
 	GenericService<T, ID> genericService;
 	
+	public GenericService<T, ID> getService() {
+        return genericService;
+    }
 	
 	@PostMapping("/getAll")
 	@ResponseBody
