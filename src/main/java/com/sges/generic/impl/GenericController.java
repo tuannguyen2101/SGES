@@ -1,7 +1,5 @@
 package com.sges.generic.impl;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sges.dto.MessageResponse;
@@ -30,10 +29,10 @@ public class GenericController<T, ID> {
 	
 	@PostMapping("/getAll")
 	@ResponseBody
-	public ResponseEntity<Object> getAll(@RequestBody List<OrderBy> orderBys){
+	public ResponseEntity<Object> getAll(@RequestParam("p") int page, @RequestParam("s") int size, OrderBy orderBy){
 		MessageResponse<Object> msg = new MessageResponse<>();
 		try {
-			msg.setData(genericService.queryAllAndSort(orderBys));
+			msg.setData(genericService.findPage(page, size, orderBy));
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

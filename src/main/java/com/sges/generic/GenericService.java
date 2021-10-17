@@ -3,15 +3,15 @@ package com.sges.generic;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-
 import com.sges.dto.OrderBy;
-import com.sges.dto.Paging;
 
 public interface GenericService <T, ID>{
 	
+    Page<T> findPage(int page, int size, OrderBy orderBy);
+	
+    List<T> findAll();
+    
 	T findById(ID id);
-
-    List<T> findAll(List<ID> ids);
 
     T save(T obj);
 
@@ -24,17 +24,5 @@ public interface GenericService <T, ID>{
     void deleteAll();
 
     boolean existsById(ID key);
-
-    List<T> queryAllAndSort(List<OrderBy> orderBys);
-
-    List<T> findByExample(T e);
-
-    List<T> findLimit(int numberSkip, int limit);
-
-    Page<T> findPage(int numberSkip, int limit, List<OrderBy> orderBys);
-
-    Object queryByExamplePageAndSort(T e, Paging pageInfo, List<OrderBy> orderBys);
-
-    List<T> findAll();
 	
 }
