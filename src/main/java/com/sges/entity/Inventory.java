@@ -15,19 +15,20 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "gender")
-public class Gender implements Serializable {
+@Table(name = "inventory")
+public class Inventory implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	
-	@NotBlank(message = "Name invalid!")
-	@NotNull(message = "Name invalid!")
-	@Column(name = "name")
-	private String name;
-	
-	@OneToMany(mappedBy = "gender")
-	@JsonIgnore
-	private List<GenderDetail> genderDetails;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @NotNull
+    @NotBlank
+    @Column(name = "name")
+    private String name;
+
+    @OneToMany(mappedBy = "inventory")
+    @JsonIgnore
+    private List<ProductDetail> productDetails;
+
 }

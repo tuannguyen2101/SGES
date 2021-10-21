@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "payment")
-public class Payment implements Serializable {
+@Table(name = "sub_cate")
+public class SubCate implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,5 +25,9 @@ public class Payment implements Serializable {
 	@NotBlank(message = "Name invalid!")
 	@Column(name = "name")
 	private String name;
-	
+
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "sup_cate_id")
+	private SupCate supCate;
 }

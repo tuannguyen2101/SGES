@@ -1,18 +1,15 @@
 package com.sges.entity;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,9 +21,9 @@ public class Combo implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	@NotBlank
-	@Length(max = 100)
+
+	@NotNull(message = "Name invalid!")
+	@NotBlank(message = "Name invalid!")
 	@Column(name = "name")
 	private String name;	
 	
@@ -38,7 +35,7 @@ public class Combo implements Serializable {
 	@JsonIgnore
 	private List<Reviews> reviews;
 
-	@ManyToOne
-	@JoinColumn(name = "order_detail_id")
-	private OrderDetail orderDetail;
+	@OneToMany(mappedBy = "combo")
+	@JsonIgnore
+	private List<OrderDetail> orderDetails;
 }
