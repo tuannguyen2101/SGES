@@ -3,8 +3,7 @@ package com.sges.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,18 +14,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class ProductDetail implements Serializable{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private BigDecimal price;
 	private int quantity;
 	private int sold;
-	private int productId;
-	private int sizeId;
-	private int colorId;
+
+	@ManyToOne
+	@JoinColumn(name = "product_id")
+	private Product product;
+
+	@ManyToOne
+	@JoinColumn(name = "size_id")
+	private Size size;
+
+	@ManyToOne
+	@JoinColumn(name = "color_id")
+	private Color color;
+
 	
 }

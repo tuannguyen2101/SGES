@@ -19,13 +19,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "combo_detail")
-public class Combodetail implements Serializable {
+public class ComboDetail implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

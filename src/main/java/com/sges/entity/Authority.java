@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,7 +30,7 @@ public class Authority implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "username")
 	private User user;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "role_id")
 	private Role role;

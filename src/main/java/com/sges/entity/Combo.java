@@ -3,21 +3,17 @@ package com.sges.entity;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,7 +31,14 @@ public class Combo implements Serializable {
 	private String name;	
 	
 	@OneToMany(mappedBy = "combo")
-	private List<Combodetail> combodetails;
-	
-	
+	@JsonIgnore
+	private List<ComboDetail> comboDetails;
+
+	@OneToMany(mappedBy = "combo")
+	@JsonIgnore
+	private List<Reviews> reviews;
+
+	@ManyToOne
+	@JoinColumn(name = "order_detail_id")
+	private OrderDetail orderDetail;
 }

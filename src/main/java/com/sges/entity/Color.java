@@ -1,22 +1,19 @@
 package com.sges.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,5 +34,10 @@ public class Color implements Serializable {
 	@Length(max = 100)
 	@Column(name = "image")
 	private String image;
+
+	@NotNull
+	@JsonIgnore
+	@OneToMany(mappedBy = "color")
+	private List<ProductDetail> productDetails;
 	
 }

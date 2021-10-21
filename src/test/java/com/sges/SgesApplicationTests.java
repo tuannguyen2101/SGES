@@ -8,6 +8,7 @@ class SgesApplicationTests {
 
     @Test
     void contextLoads() {
+    	System.out.println("Hello");
     }
 
 }

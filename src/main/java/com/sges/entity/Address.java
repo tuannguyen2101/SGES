@@ -19,7 +19,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,7 +31,7 @@ public class Address implements Serializable {
 	private int id;
 	
 	@NotBlank
-	@Length(min = 0, max = 200)
+	@Length(max = 200)
 	@Column(name = "address")
 	private String address;
 	
@@ -49,7 +48,6 @@ public class Address implements Serializable {
 	@NotBlank
 	@Column(name = "phone")
 	private String phone;
-	
 	
 	@NotNull
 	@Column(name = "status")
