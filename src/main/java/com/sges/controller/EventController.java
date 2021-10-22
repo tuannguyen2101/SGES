@@ -1,12 +1,12 @@
 package com.sges.controller;
 
-import com.sges.entity.Address;
+import com.sges.entity.Event;
 import com.sges.generic.impl.GenericController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/address")
-public class AddressController extends GenericController<Address, Integer>{
+@RequestMapping("/event")
+public class EventController extends GenericController<Event, Integer>{
 
 }

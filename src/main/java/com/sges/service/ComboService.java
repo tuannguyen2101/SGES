@@ -1,8 +1,8 @@
 package com.sges.service;
 
-import com.sges.entity.Product;
+import com.sges.entity.Combo;
 import com.sges.generic.GenericService;
 
-public interface ComboService extends GenericService<Product, Integer>{
+public interface ComboService extends GenericService<Combo, Integer>{
 	
 }

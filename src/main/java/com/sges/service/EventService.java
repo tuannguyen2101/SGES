@@ -1,8 +1,8 @@
 package com.sges.service;
 
-import com.sges.entity.Product;
+import com.sges.entity.Event;
 import com.sges.generic.GenericService;
 
-public interface EventService extends GenericService<Product, Integer>{
+public interface EventService extends GenericService<Event, Integer>{
 	
 }

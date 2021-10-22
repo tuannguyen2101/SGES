@@ -1,12 +1,11 @@
 package com.sges.service.impl;
 
+import com.sges.entity.Color;
+import com.sges.generic.impl.GenericServiceImpl;
+import com.sges.service.ColorService;
 import org.springframework.stereotype.Service;
 
-import com.sges.entity.Product;
-import com.sges.generic.impl.GenericServiceImpl;
-import com.sges.service.ProductService;
-
 @Service
-public class ColorServiceImpl extends GenericServiceImpl<Product, Integer> implements ProductService{
+public class ColorServiceImpl extends GenericServiceImpl<Color, Integer> implements ColorService {
 
 }

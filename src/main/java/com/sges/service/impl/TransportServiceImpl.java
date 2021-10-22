@@ -1,12 +1,11 @@
 package com.sges.service.impl;
 
+import com.sges.entity.Transport;
+import com.sges.generic.impl.GenericServiceImpl;
+import com.sges.service.TransportService;
 import org.springframework.stereotype.Service;
 
-import com.sges.entity.Product;
-import com.sges.generic.impl.GenericServiceImpl;
-import com.sges.service.ProductService;
-
 @Service
-public class TransportServiceImpl extends GenericServiceImpl<Product, Integer> implements ProductService{
+public class TransportServiceImpl extends GenericServiceImpl<Transport, Integer> implements TransportService {
 
 }

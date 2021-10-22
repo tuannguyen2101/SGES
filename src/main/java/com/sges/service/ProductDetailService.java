@@ -1,8 +1,8 @@
 package com.sges.service;
 
-import com.sges.entity.Product;
+import com.sges.entity.ProductDetail;
 import com.sges.generic.GenericService;
 
-public interface ProductDetailService extends GenericService<Product, Integer>{
+public interface ProductDetailService extends GenericService<ProductDetail, Integer>{
 	
 }

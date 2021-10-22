@@ -1,12 +1,11 @@
 package com.sges.service.impl;
 
+import com.sges.entity.Gender;
+import com.sges.generic.impl.GenericServiceImpl;
+import com.sges.service.GenderService;
 import org.springframework.stereotype.Service;
 
-import com.sges.entity.Product;
-import com.sges.generic.impl.GenericServiceImpl;
-import com.sges.service.ProductService;
-
 @Service
-public class GenderServiceImpl extends GenericServiceImpl<Product, Integer> implements ProductService{
+public class GenderServiceImpl extends GenericServiceImpl<Gender, Integer> implements GenderService {
 
 }

@@ -1,12 +1,11 @@
 package com.sges.service.impl;
 
+import com.sges.entity.Authority;
+import com.sges.generic.impl.GenericServiceImpl;
+import com.sges.service.AuthorityService;
 import org.springframework.stereotype.Service;
 
-import com.sges.entity.Product;
-import com.sges.generic.impl.GenericServiceImpl;
-import com.sges.service.ProductService;
-
 @Service
-public class AuthorityServiceImpl extends GenericServiceImpl<Product, Integer> implements ProductService{
+public class AuthorityServiceImpl extends GenericServiceImpl<Authority, Integer> implements AuthorityService {
 
 }

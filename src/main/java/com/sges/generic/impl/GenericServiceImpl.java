@@ -1,23 +1,26 @@
 package com.sges.generic.impl;
 
-import java.util.List;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sges.dto.OrderBy;
+import com.sges.generic.GenericService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
-import com.sges.dto.OrderBy;
-import com.sges.generic.GenericService;
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
+@Service
 public class GenericServiceImpl<T, ID> implements GenericService<T, ID>{
 
-	@Autowired
+	final
     JpaRepository<T, ID> genericRepo;
+
+    public GenericServiceImpl(JpaRepository<T, ID> genericRepo) {
+        this.genericRepo = genericRepo;
+    }
 
     public JpaRepository<T, ID> getRepository() {
         return genericRepo;
