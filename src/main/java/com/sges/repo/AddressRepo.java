@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.sges.entity.Address;
 
 @Repository
-public interface AddressRepo extends JpaRepository<Address, Integer> {
+public interface AddressRepo extends BaseRepo<Address, Integer> {
 	
 }

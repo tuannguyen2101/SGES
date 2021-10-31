@@ -1,8 +1,8 @@
 package com.sges.service;
 
 import com.sges.entity.Size;
-import com.sges.generic.GenericService;
+import com.sges.generic.BaseService;
 
-public interface SizeService extends GenericService<Size, Integer>{
+public interface SizeService extends BaseService<Size, Integer> {
 	
 }

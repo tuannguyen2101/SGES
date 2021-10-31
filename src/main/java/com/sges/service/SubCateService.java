@@ -1,9 +1,8 @@
 package com.sges.service;
 
-import com.sges.entity.Product;
 import com.sges.entity.SubCate;
-import com.sges.generic.GenericService;
+import com.sges.generic.BaseService;
 
-public interface SubCateService extends GenericService<SubCate, Integer>{
+public interface SubCateService extends BaseService<SubCate, Integer> {
 	
 }

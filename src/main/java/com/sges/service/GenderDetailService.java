@@ -1,8 +1,8 @@
 package com.sges.service;
 
 import com.sges.entity.GenderDetail;
-import com.sges.generic.GenericService;
+import com.sges.generic.BaseService;
 
-public interface GenderDetailService extends GenericService<GenderDetail, Integer>{
+public interface GenderDetailService extends BaseService<GenderDetail, Integer> {
 	
 }

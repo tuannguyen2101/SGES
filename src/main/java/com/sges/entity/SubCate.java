@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "sub_cate")
 public class SubCate implements Serializable{
 
 	@Id
@@ -28,6 +27,6 @@ public class SubCate implements Serializable{
 
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "sup_cate_id")
+	@JoinColumn(name = "supcate_id")
 	private SupCate supCate;
 }

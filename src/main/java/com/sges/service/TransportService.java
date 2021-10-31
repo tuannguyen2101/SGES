@@ -1,8 +1,8 @@
 package com.sges.service;
 
 import com.sges.entity.Transport;
-import com.sges.generic.GenericService;
+import com.sges.generic.BaseService;
 
-public interface TransportService extends GenericService<Transport, Integer>{
+public interface TransportService extends BaseService<Transport, Integer> {
 	
 }

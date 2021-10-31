@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.sges.entity.Authority;
 
 @Repository
-public interface AuthorityRepo extends JpaRepository<Authority, Integer> {
+public interface AuthorityRepo extends BaseRepo<Authority, Integer> {
 	
 }

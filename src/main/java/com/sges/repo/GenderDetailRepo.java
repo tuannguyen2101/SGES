@@ -6,6 +6,6 @@ import com.sges.entity.GenderDetail;
 
 
 @Repository
-public interface GenderDetailRepo extends JpaRepository<GenderDetail, Integer> {
+public interface GenderDetailRepo extends BaseRepo<GenderDetail, Integer> {
 
 }

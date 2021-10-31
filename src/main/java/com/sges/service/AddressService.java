@@ -1,9 +1,8 @@
 package com.sges.service;
 
 import com.sges.entity.Address;
-import com.sges.entity.Product;
-import com.sges.generic.GenericService;
+import com.sges.generic.BaseService;
 
-public interface AddressService extends GenericService<Address, Integer>{
+public interface AddressService extends BaseService<Address, Integer> {
 	
 }

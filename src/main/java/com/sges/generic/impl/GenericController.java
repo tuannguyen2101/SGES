@@ -2,10 +2,16 @@ package com.sges.generic.impl;
 
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sges.dto.ErrorMessage;
+import com.sges.dto.Metadata;
+import com.sges.dto.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,74 +20,100 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sges.dto.MessageResponse;
-import com.sges.dto.OrderBy;
-import com.sges.generic.GenericService;
+import com.sges.generic.BaseService;
 
-public class GenericController<T, ID> {
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+public class GenericController<T, E> {
 	@Autowired
-	GenericService<T, ID> genericService;
-	
-	public GenericService<T, ID> getService() {
-        return genericService;
-    }
-	
-	@PostMapping("/getAll")
-	@ResponseBody
-	public ResponseEntity<Object> getAll(@RequestParam("p") int page, @RequestParam("s") int size, OrderBy orderBy){
-		MessageResponse<Object> msg = new MessageResponse<>();
-		try {
-			msg.setData(genericService.findPage(page, size, orderBy));
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return new ResponseEntity<>(msg, HttpStatus.OK);
+	private ObjectMapper objectMapper;
+
+	private final BaseService<T, E> baseService;
+
+	public GenericController(BaseService<T, E> baseService) {
+		this.baseService = baseService;
 	}
-	
+
+	@GetMapping("")
+	@ResponseBody
+	public ResponseEntity<ResponseDTO<List<Map>>> findAll(
+			@RequestParam(value = "p", defaultValue = "0") int page,
+			@RequestParam(value = "s", defaultValue = "10") int size,
+			@RequestParam(value = "fields", required = false) Set<String> fields) {
+
+		ResponseDTO<List<Map>> responseDTO = new ResponseDTO<>();
+		Page<T> p = this.baseService.findPage(page, size);
+
+		List<Map> mapList = p.getContent()
+				.stream()
+				.map(r -> this.objectMapper.convertValue(r ,Map.class))
+				.peek(map -> {
+					if (fields != null) map.keySet().retainAll(fields);
+				})
+				.collect(Collectors.toList());
+		responseDTO.setData(mapList);
+		responseDTO.setMetadata(new Metadata(p.getSize(), p.getTotalElements(), p.getTotalPages()));
+		return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+	}
+
 	@GetMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<Object> findById(@PathVariable("id") ID id){
-		MessageResponse<Object> msg = new MessageResponse<>();
+	public ResponseEntity<ResponseDTO<Map>> getById(@PathVariable("id") E id, @RequestParam(value = "fields", required = false) Set<String> fields) {
+		ResponseDTO<Map> responseDTO = new ResponseDTO<>();
 		try {
-			msg.setData(genericService.findById(id));
-		} catch (Exception e) {
-			// TODO: handle exception
+			T t = this.baseService.findById(id);
+			Map map = this.objectMapper.convertValue(t, Map.class);
+			if (fields != null) {
+				map.keySet().retainAll(fields);
+			}
+			responseDTO.setData(map);
+			return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+		} catch (Exception e){
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setUserMessage("No data found!");
+			errorMessage.setInternalMessage(e.toString());
+			responseDTO.setErrorMessage(errorMessage);
+			return new ResponseEntity<>(responseDTO, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(msg, HttpStatus.OK);
 	}
-	
-	@PostMapping("/create")
-	public ResponseEntity<Object> create(@RequestBody @Valid T t) {
-		MessageResponse<Object> msg = new MessageResponse<>();
-		try {
-			msg.setData(genericService.save(t));
-		} catch (Exception e) {
-			// TODO: handle exception
+
+	@PostMapping("")
+	@ResponseBody
+	@PreAuthorize(value="isAuthenticated()")
+	public ResponseEntity<ResponseDTO<T>> create(@Valid @RequestBody T obj, BindingResult result) {
+		ResponseDTO<T> responseDTO = new ResponseDTO<>();
+		if(result.hasErrors()) {
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setUserMessage("Data is invalid!");
+			errorMessage.setInternalMessage(result.toString());
+			responseDTO.setErrorMessage(errorMessage);
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(msg, HttpStatus.OK);
+		else {
+			responseDTO.setData(this.baseService.create(obj));
+			return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+		}
 	}
-	
-	@PutMapping("/update")
-	public ResponseEntity<Object> update(@RequestBody @Valid T t) {
-		MessageResponse<Object> msg = new MessageResponse<>();
-		try {
-			msg.setData(genericService.save(t));
-		} catch (Exception e) {
-			// TODO: handle exception
+
+	@PutMapping("")
+	@ResponseBody
+	@PreAuthorize(value="isAuthenticated()")
+	public ResponseEntity<ResponseDTO<T>> update(@Valid @RequestBody T obj, BindingResult result) {
+		ResponseDTO<T> responseDTO = new ResponseDTO<>();
+		if(result.hasErrors()) {
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setUserMessage("Data is invalid!");
+			errorMessage.setInternalMessage(result.toString());
+			responseDTO.setErrorMessage(errorMessage);
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(msg, HttpStatus.OK);
-	}
-	
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> delete(@PathVariable ID id) {
-		MessageResponse<Object> msg = new MessageResponse<>();
-		try {
-			genericService.delete(id);
-		} catch (Exception e) {
-			// TODO: handle exception
+		else {
+			responseDTO.setData(this.baseService.update(obj));
+			return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
 		}
-		return new ResponseEntity<>(msg, HttpStatus.OK);
 	}
 	
 }

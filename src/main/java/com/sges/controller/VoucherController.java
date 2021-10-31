@@ -1,6 +1,7 @@
 package com.sges.controller;
 
 import com.sges.entity.Voucher;
+import com.sges.generic.BaseService;
 import com.sges.generic.impl.GenericController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,4 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/voucher")
 public class VoucherController extends GenericController<Voucher, Integer>{
 
+    public VoucherController(BaseService<Voucher, Integer> baseService) {
+        super(baseService);
+    }
 }

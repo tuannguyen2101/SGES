@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import com.sges.entity.Combo;
 
 @Repository
-public interface ComboRepo extends JpaRepository<Combo, Integer> {
+public interface ComboRepo extends BaseRepo<Combo, Integer> {
 
 }

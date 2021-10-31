@@ -1,8 +1,8 @@
 package com.sges.service;
 
 import com.sges.entity.Role;
-import com.sges.generic.GenericService;
+import com.sges.generic.BaseService;
 
-public interface RoleService extends GenericService<Role, Integer>{
+public interface RoleService extends BaseService<Role, Integer> {
 	
 }

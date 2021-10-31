@@ -1,67 +1,63 @@
 package com.sges.generic.impl;
 
-import com.sges.dto.OrderBy;
-import com.sges.generic.GenericService;
+import com.sges.generic.BaseService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-@Service
-public class GenericServiceImpl<T, ID> implements GenericService<T, ID>{
+public class GenericServiceImpl<T, ID> implements BaseService<T, ID> {
 
-	final
-    JpaRepository<T, ID> genericRepo;
+    private final JpaRepository<T, ID> jpaRepository;
 
-    public GenericServiceImpl(JpaRepository<T, ID> genericRepo) {
-        this.genericRepo = genericRepo;
+    public GenericServiceImpl(JpaRepository<T, ID> jpaRepository) {
+        this.jpaRepository = jpaRepository;
     }
 
-    public JpaRepository<T, ID> getRepository() {
-        return genericRepo;
-    }
-
-    @Override
-    public Page<T> findPage(int page, int size, OrderBy orderBy) {
-        return genericRepo.findAll(PageRequest.of(page, size, Sort.by(orderBy.getProperty(), orderBy.getDirection())));
-    }
-    
     @Override
     public List<T> findAll() {
-        return genericRepo.findAll();
+        return this.jpaRepository.findAll();
     }
-    
+
+    @Override
+    public Page<T> findPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return this.jpaRepository.findAll(pageable);
+    }
+
+    @Override
     public T findById(ID id) {
-        return genericRepo.findById(id).orElse(null);
+        return this.jpaRepository.findById(id).get();
     }
 
-    public T save(T obj) {
-        return genericRepo.save(obj);
+    @Override
+    public T create(T obj) {
+        return this.jpaRepository.save(obj);
     }
 
-    public List<T> save(List<T> lst) throws Exception {
-        return genericRepo.saveAll(lst);
+    @Override
+    public T update(T obj) {
+        return this.jpaRepository.save(obj);
     }
 
+    @Override
     public void delete(ID key) {
-        genericRepo.deleteById(key);
+        this.jpaRepository.deleteById(key);
     }
 
-    public void delete(List<T> lst) {
-        genericRepo.deleteAll(lst);
+    @Override
+    public Long count() {
+        return jpaRepository.count();
     }
 
-    public void deleteAll() {
-        genericRepo.deleteAll();
-    }
-
+    @Override
     public boolean existsById(ID key) {
-        return genericRepo.existsById(key);
+        return jpaRepository.existsById(key);
     }
-	
+
+
 }

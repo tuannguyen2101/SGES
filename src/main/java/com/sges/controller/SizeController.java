@@ -1,6 +1,7 @@
 package com.sges.controller;
 
 import com.sges.entity.Size;
+import com.sges.generic.BaseService;
 import com.sges.generic.impl.GenericController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,4 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/size")
 public class SizeController extends GenericController<Size, Integer>{
 
+    public SizeController(BaseService<Size, Integer> baseService) {
+        super(baseService);
+    }
 }
