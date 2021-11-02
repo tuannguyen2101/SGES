@@ -46,7 +46,9 @@ public class GenericServiceImpl<T, ID> implements BaseService<T, ID> {
 
     @Override
     public void delete(ID key) {
-        this.jpaRepository.deleteById(key);
+        if (this.jpaRepository.existsById(key)) {
+            this.jpaRepository.deleteById(key);
+        }
     }
 
     @Override

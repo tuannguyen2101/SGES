@@ -1,15 +1,14 @@
 package com.sges.entity;
 
-import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
@@ -38,11 +37,11 @@ public class Reviews implements Serializable {
 
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "username")
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "combo_is")
+	@JoinColumn(name = "combo_id")
 	private Combo combo;
 }

@@ -4,5 +4,6 @@ import com.sges.entity.ProductDetail;
 import com.sges.generic.BaseService;
 
 public interface ProductDetailService extends BaseService<ProductDetail, Integer> {
-	
+
+    void deleteProductDetailByProduct_Id(Integer id);
 }

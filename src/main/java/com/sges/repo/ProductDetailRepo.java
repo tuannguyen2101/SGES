@@ -5,4 +5,6 @@ import com.sges.entity.ProductDetail;
 
 @Repository
 public interface ProductDetailRepo extends BaseRepo<ProductDetail, Integer> {
+    void deleteProductDetailByProduct_Id(Integer id);
+    boolean existsProductDetailByProduct_Id(Integer id);
 }

@@ -1,7 +1,7 @@
 package com.sges.entity;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -40,15 +40,12 @@ public class Product implements Serializable {
 	private String description;
 
 	@NotNull(message = "Created invalid!")
-	@NotBlank(message = "Created invalid!")
 	@Column(name = "created")
+	@Temporal(TemporalType.DATE)
 	private Date created;
 
 	@Column(name = "view")
 	private int view;
-
-	@Column(name = "like")
-	private int like;
 
 	@Column(name = "status")
 	private int status;

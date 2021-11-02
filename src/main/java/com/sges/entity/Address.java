@@ -27,7 +27,7 @@ public class Address implements Serializable {
 	
 	@NotNull(message = "Username invalid!")
 	@ManyToOne
-	@JoinColumn(name = "username")
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	@NotNull(message = "Receiver invalid!")

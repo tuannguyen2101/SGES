@@ -10,7 +10,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddressServiceImpl extends GenericServiceImpl<Address, Integer> implements AddressService {
 
-    public AddressServiceImpl(JpaRepository<Address, Integer> jpaRepository) {
+    final AddressRepo addressRepo;
+
+    public AddressServiceImpl(JpaRepository<Address, Integer> jpaRepository, AddressRepo addressRepo) {
         super(jpaRepository);
+        this.addressRepo = addressRepo;
+    }
+
+    @Override
+    public void deleteAddressByUser_Id(Integer id) {
+        if (addressRepo.existsAddressByUser_Id(id)) {
+            addressRepo.deleteAddressByUser_Id(id);
+        }
     }
 }

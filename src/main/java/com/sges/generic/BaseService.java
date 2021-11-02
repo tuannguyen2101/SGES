@@ -1,9 +1,8 @@
 package com.sges.generic;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
-import com.sges.dto.OrderBy;
+
+import java.util.List;
 
 public interface BaseService<T, ID>{
 

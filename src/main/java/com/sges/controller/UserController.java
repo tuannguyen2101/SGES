@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
-public class UserController extends GenericController<User, String>{
+public class UserController extends GenericController<User, Integer>{
 
-    public UserController(BaseService<User, String> baseService) {
+    public UserController(BaseService<User, Integer> baseService) {
         super(baseService);
     }
 }

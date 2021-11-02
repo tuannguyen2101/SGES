@@ -10,7 +10,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorityServiceImpl extends GenericServiceImpl<Authority, Integer> implements AuthorityService {
 
-    public AuthorityServiceImpl(JpaRepository<Authority, Integer> jpaRepository) {
+    final AuthorityRepo authorityRepo;
+
+    public AuthorityServiceImpl(JpaRepository<Authority, Integer> jpaRepository, AuthorityRepo authorityRepo) {
         super(jpaRepository);
+        this.authorityRepo = authorityRepo;
     }
+
+    @Override
+    public void deleteAuthorityByUser_Id(Integer id) {
+        if (authorityRepo.existsAuthorityByUser_Id(id)) {
+            authorityRepo.deleteAuthorityByUser_Id(id);
+        }
+    }
+
 }

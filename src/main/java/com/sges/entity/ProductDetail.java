@@ -29,7 +29,6 @@ public class ProductDetail implements Serializable{
 	@Column(name = "price")
 	private BigDecimal price;
 
-
 	@NotNull
 	@Min(message = "Quantity invalid!", value = 0)
 	@Column(name = "quantity")
@@ -44,13 +43,14 @@ public class ProductDetail implements Serializable{
 	@JoinColumn(name = "product_id")
 	private Product product;
 
-	@ManyToOne
-	@JoinColumn(name = "size_id")
-	private Size size;
+	@Column(name = "size")
+	private String size;
 
-	@ManyToOne
-	@JoinColumn(name = "color_id")
-	private Color color;
+	@Column(name = "color")
+	private String color;
+
+	@Column(name = "image")
+	private String image;
 
 	@ManyToOne
 	@JoinColumn(name = "inventory_id")

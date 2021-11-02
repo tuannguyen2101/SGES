@@ -1,18 +1,17 @@
 package com.sges.entity;
 
-import java.io.Serializable;
-import java.sql.Date;
-import java.util.List;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.sql.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -50,7 +49,7 @@ public class Order implements Serializable {
 
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "username")
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	@NotNull
