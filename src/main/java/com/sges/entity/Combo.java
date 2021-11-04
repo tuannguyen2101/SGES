@@ -25,7 +25,10 @@ public class Combo implements Serializable {
 	@NotNull(message = "Name invalid!")
 	@NotBlank(message = "Name invalid!")
 	@Column(name = "name")
-	private String name;	
+	private String name;
+
+	@Column(name = "sale_off")
+	private Integer saleOff;
 	
 	@OneToMany(mappedBy = "combo")
 	@JsonIgnore
