@@ -50,9 +50,15 @@ public class Product implements Serializable {
 	@Column(name = "status")
 	private int status;
 
+	@Column(name = "sale")
+	private int sale;
+
 	@ManyToOne
 	@JoinColumn(name = "sub_cate_id")
 	private SubCate subCate;
+
+	@Column(name = "price")
+	private double price;
 
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
