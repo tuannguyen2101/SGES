@@ -58,10 +58,6 @@ public class ProductDetail implements Serializable{
 
 	@OneToMany(mappedBy = "productDetail")
 	@JsonIgnore
-	private List<ComboDetail> comboDetails;
-
-	@OneToMany(mappedBy = "productDetail")
-	@JsonIgnore
 	private List<OrderDetail> orderDetails;
 	
 }
