@@ -33,6 +33,6 @@ public class ComboDetail implements Serializable {
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "product_id")
-	private ProductDetail product;
+	private Product product;
 	
 }

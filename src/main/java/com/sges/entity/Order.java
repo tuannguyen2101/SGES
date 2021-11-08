@@ -52,16 +52,6 @@ public class Order implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "payment_id")
-	private Payment payment;
-
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "transport_id")
-	private Transport transport;
-
 	@OneToMany(mappedBy = "order")
 	@JsonIgnore
 	private List<OrderDetail> orderDetails;
