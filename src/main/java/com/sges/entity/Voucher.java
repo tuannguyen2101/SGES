@@ -22,7 +22,7 @@ public class Voucher implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@NotNull(message = "Name invalid!")
 	@NotBlank(message = "Name invalid!")
@@ -40,7 +40,7 @@ public class Voucher implements Serializable {
 
 	@NotNull
 	@Column(name = "status")
-	private int status;
+	private Integer status;
 
 	@NotNull
 	@Column(name = "description")

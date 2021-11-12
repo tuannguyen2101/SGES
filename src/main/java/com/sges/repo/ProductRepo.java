@@ -15,4 +15,10 @@ public interface ProductRepo extends BaseRepo<Product, Integer> {
     List<Product> getBySaleGreaterThan(int sale);
 
     List<Product> getBySubCate_SupCate_Id(int id, Pageable pageable);
+
+    List<Product> findByNameIn(List<String> name);
+
+    List<Product> findByPriceBetween(Double startingPrice,Double endingPrice);
+
+    List<Product> findAllByOrderByIdAsc();
 }

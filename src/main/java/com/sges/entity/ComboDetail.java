@@ -18,7 +18,7 @@ public class ComboDetail implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@NotBlank(message = "Name invalid!")
 	@NotNull(message = "Name invalid!")

@@ -18,7 +18,7 @@ public class Address implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@NotBlank(message = "Address invalid!")
 	@NotNull(message = "Address invalid!")
@@ -42,6 +42,6 @@ public class Address implements Serializable {
 	
 	@NotNull
 	@Column(name = "status")
-	private int status;
+	private Integer status;
 	
 }

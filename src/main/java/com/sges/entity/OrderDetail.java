@@ -19,11 +19,11 @@ public class OrderDetail implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@Column(name = "quantity")
 	@Min(message = "quantity invalid!", value = 1)
-	private int quantity;
+	private Integer quantity;
 
 	@Column(name = "total")
 	private BigDecimal total;

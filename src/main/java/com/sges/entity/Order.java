@@ -22,7 +22,7 @@ public class Order implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@NotNull
 	@NotBlank
@@ -41,7 +41,7 @@ public class Order implements Serializable {
 	private String adress;
 
 	@Column(name = "status")
-	private int status;
+	private Integer status;
 
 	@ManyToOne
 	@JoinColumn(name = "voucher_id")

@@ -12,4 +12,5 @@ public interface ProductService extends BaseService<Product, Integer> {
 	List<Product> getTopByView();
 	List<Product> getSaleProduct();
 	List<Product> getByCategoryId(int id, int page);
+	List<Product> filter(List<String> productName, List<Double> prices,boolean sortByPrice);
 }

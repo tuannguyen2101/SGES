@@ -25,7 +25,7 @@ public class GenderDetail implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@NotNull
 	@ManyToOne

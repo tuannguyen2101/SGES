@@ -18,7 +18,7 @@ public class SubCate implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@NotNull(message = "Name invalid!")
 	@NotBlank(message = "Name invalid!")

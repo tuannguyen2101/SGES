@@ -22,7 +22,7 @@ public class ProductDetail implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@Min(message = "Price invalid!", value = 0)
 	@NotNull
@@ -32,12 +32,12 @@ public class ProductDetail implements Serializable{
 	@NotNull
 	@Min(message = "Quantity invalid!", value = 0)
 	@Column(name = "quantity")
-	private int quantity;
+	private Integer quantity;
 
 	@NotNull
 	@Min(message = "Sold invalid!", value = 0)
 	@Column(name = "sold")
-	private int sold;
+	private Integer sold;
 
 	@ManyToOne
 	@JoinColumn(name = "product_id")

@@ -19,11 +19,11 @@ public class Reviews implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@Min(message = "Rate invalid!", value = 0)
 	@Column(name = "rate")
-	private int rate;
+	private Integer rate;
 
 	@NotNull(message = "Comment invalid!")
 	@NotBlank(message = "Comment invalid!")

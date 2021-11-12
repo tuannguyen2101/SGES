@@ -60,11 +60,11 @@ public class User implements Serializable {
 
 	@NotNull(message = "Gender invalid!")
 	@Column(name = "gender")
-	private int gender;
+	private Integer gender;
 
 	@NotNull(message = "Status invalid!")
 	@Column(name = "status")
-	private int status;
+	private Integer status;
 
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore

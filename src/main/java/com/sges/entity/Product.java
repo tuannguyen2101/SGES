@@ -22,7 +22,7 @@ public class Product implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@NotNull(message = "Name invalid!")
 	@NotBlank(message = "Name invalid!")
@@ -45,20 +45,20 @@ public class Product implements Serializable {
 	private Date created;
 
 	@Column(name = "view")
-	private int view;
+	private Integer view;
 
 	@Column(name = "status")
-	private int status;
+	private Integer status;
 
 	@Column(name = "sale")
-	private int sale;
+	private Integer sale;
 
 	@ManyToOne
 	@JoinColumn(name = "sub_cate_id")
 	private SubCate subCate;
 
 	@Column(name = "price")
-	private double price;
+	private Double price;
 
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
