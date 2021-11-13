@@ -23,12 +23,11 @@ public class Role implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@NotNull
-	@NotBlank
-	@Column(name = "role")
-	private String role;
+	@Enumerated(EnumType.STRING)
+	@Column(length = 20)
+	private ERole role;
 
-	@OneToMany(mappedBy = "role")
-	@JsonIgnore
-	private List<Authority> authorities;
+//	@OneToMany(mappedBy = "role")
+//	@JsonIgnore
+//	private List<Authority> authorities;
 }

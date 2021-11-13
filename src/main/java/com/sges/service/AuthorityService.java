@@ -1,9 +1,9 @@
-package com.sges.service;
-
-import com.sges.entity.Authority;
-import com.sges.generic.BaseService;
-
-public interface AuthorityService extends BaseService<Authority, Integer> {
-
-    void deleteAuthorityByUser_Id(Integer id);
-}
+//package com.sges.service;
+//
+//import com.sges.entity.Authority;
+//import com.sges.generic.BaseService;
+//
+//public interface AuthorityService extends BaseService<Authority, Integer> {
+//
+//    void deleteAuthorityByUser_Id(Integer id);
+//}

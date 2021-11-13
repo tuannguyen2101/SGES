@@ -2,6 +2,8 @@ package com.sges.jwt;
 
 import com.sges.service.impl.CustomUserDetailService;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,25 +29,34 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Autowired
     CustomUserDetailService customUserDetailService;
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String jwt = this.getJwtFromRequest(request);
-        if(StringUtils.hasText(jwt) && jwtHelper.validateJwtToken(jwt)) {
-            String username = jwtHelper.getUsernameFromJwt(jwt);
-            UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
-            if(userDetails != null) {
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        try {
+            String jwt = parseJwt(request);
+            if (jwt != null && jwtHelper.validateJwtToken(jwt)) {
+                String username = jwtHelper.getUserNameFromJwtToken(jwt);
+
+                UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+        } catch (Exception e) {
+            logger.error("Cannot set user authentication: {}", e);
         }
+
         filterChain.doFilter(request, response);
     }
 
-    private String getJwtFromRequest(HttpServletRequest request) {
+    private String parseJwt(HttpServletRequest request) {
         String jwtToken = request.getHeader("Authorization");
         if(StringUtils.hasText(jwtToken) && jwtToken.startsWith("Bearer ")){
-            return jwtToken.substring(7);
+            return jwtToken.substring(7,jwtToken.length());
         }
         return null;
     }
