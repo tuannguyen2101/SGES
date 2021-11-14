@@ -39,7 +39,7 @@ public class User implements Serializable {
 	private String password;
 
 	@Column(name = "avatar")
-	@NotBlank
+//	@NotBlank
 	private String avatar;
 
 	@NotNull(message = "Fullname invalid!")
@@ -54,8 +54,8 @@ public class User implements Serializable {
 	private String email;
 
 	@Length(message = "Phone invalid!", min = 8, max = 15)
-	@NotNull(message = "Phone invalid!")
-	@NotBlank(message = "Phone invalid!")
+//	@NotNull(message = "Phone invalid!")
+//	@NotBlank(message = "Phone invalid!")
 	@Column(name = "phone")
 	private String phone;
 

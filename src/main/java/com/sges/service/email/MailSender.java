@@ -13,6 +13,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Map;
 
+@Service
 @RequiredArgsConstructor
 public class MailSender {
     private final JavaMailSender mailSender;

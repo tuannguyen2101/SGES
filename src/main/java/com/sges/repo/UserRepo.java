@@ -14,4 +14,7 @@ public interface UserRepo extends BaseRepo<User, Integer> {
 
     Boolean existsByEmail(String email);
 
+    User findByOtpCode(String code);
+
+    User findByEmail(String email);
 }

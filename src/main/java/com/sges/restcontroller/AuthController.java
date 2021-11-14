@@ -1,19 +1,26 @@
 package com.sges.restcontroller;
 
+import com.sges.config.AuthenticationMapper;
 import com.sges.dto.CustomUserDetail;
+import com.sges.dto.request.ForgotPasswordRequest;
 import com.sges.dto.request.SigninRequest;
 import com.sges.dto.request.SignupRequest;
 import com.sges.dto.response.JwtResponse;
 import com.sges.dto.response.MessageResponse;
+import com.sges.dto.response.UserResponse;
 import com.sges.entity.ERole;
 import com.sges.entity.Role;
 import com.sges.entity.User;
+import com.sges.exception.ApiRequestException;
+import com.sges.exception.PasswordConfirmException;
+import com.sges.exception.PasswordException;
 import com.sges.jwt.JwtHelper;
 import com.sges.repo.RoleRepo;
 import com.sges.repo.UserRepo;
 import com.sges.service.RoleService;
 import com.sges.service.impl.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,6 +57,9 @@ public class AuthController {
 
     @Autowired
     CustomUserDetailService customUserDetailService;
+
+    @Autowired
+    AuthenticationMapper authenticationMapper;
 
     @PostMapping("/signup")
     public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupRequest signupRequest){
@@ -124,5 +134,32 @@ public class AuthController {
                                                 userDetail.getEmail(),
                                                 roles));
     }
+    @PostMapping("/forgot")
+    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequest passwordReset) {
+        boolean forgotPassword = authenticationMapper.sendPasswordResetCode(passwordReset.getEmail());
+        if (!forgotPassword) {
+            throw new ApiRequestException("Email not found", HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("Reset password code is send to your E-mail");
+    }
 
+    @GetMapping("/reset/{code}")
+    public ResponseEntity<UserResponse> getPasswordResetCode(@PathVariable String code) {
+        UserResponse user = authenticationMapper.findByOtpCode(code);
+        if (user == null) {
+            throw new ApiRequestException("Password reset code is invalid!", HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity<String> passwordReset(@RequestBody ForgotPasswordRequest passwordReset) {
+        if (authenticationMapper.isPasswordConfirmEmpty(passwordReset.getPassword2())) {
+            throw new PasswordConfirmException("Password confirmation cannot be empty.");
+        }
+        if (authenticationMapper.isPasswordDifferent(passwordReset.getPassword(), passwordReset.getPassword2())) {
+            throw new PasswordException("Passwords do not match.");
+        }
+        return ResponseEntity.ok(authenticationMapper.passwordReset(passwordReset.getEmail(), passwordReset.getPassword()));
+    }
 }
