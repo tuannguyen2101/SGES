@@ -19,15 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Slf4j
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Autowired
-    JwtHelper jwtHelper;
+    private JwtHelper jwtHelper;
 
     @Autowired
-    CustomUserDetailService customUserDetailService;
+    private CustomUserDetailService customUserDetailService;
 
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
 

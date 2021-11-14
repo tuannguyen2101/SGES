@@ -12,12 +12,14 @@ import com.sges.jwt.JwtHelper;
 import com.sges.repo.RoleRepo;
 import com.sges.repo.UserRepo;
 import com.sges.service.RoleService;
+import com.sges.service.impl.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +47,9 @@ public class AuthController {
 
     @Autowired
     JwtHelper jwtHelper;
+
+    @Autowired
+    CustomUserDetailService customUserDetailService;
 
     @PostMapping("/signup")
     public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupRequest signupRequest){
