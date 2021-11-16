@@ -1,9 +1,7 @@
 package com.sges.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -12,9 +10,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -33,12 +34,12 @@ public class User implements Serializable {
 
 	@NotNull(message = "Password invalid!")
 	@NotBlank(message = "Password invalid!")
-	@Length(message = "Password invalid!", min = 6, max = 45)
+	@Length(message = "Password invalid!", min = 6)
 	@Column(name = "password")
 	private String password;
 
 	@Column(name = "avatar")
-	@NotBlank
+//	@NotBlank
 	private String avatar;
 
 	@NotNull(message = "Fullname invalid!")
@@ -53,12 +54,12 @@ public class User implements Serializable {
 	private String email;
 
 	@Length(message = "Phone invalid!", min = 8, max = 15)
-	@NotNull(message = "Phone invalid!")
-	@NotBlank(message = "Phone invalid!")
+//	@NotNull(message = "Phone invalid!")
+//	@NotBlank(message = "Phone invalid!")
 	@Column(name = "phone")
 	private String phone;
 
-	@NotNull(message = "Gender invalid!")
+//	@NotNull(message = "Gender invalid!")
 	@Column(name = "gender")
 	private Integer gender;
 
@@ -84,7 +85,28 @@ public class User implements Serializable {
 	@JsonIgnore
 	private List<Reviews> reviews;
 
-	@OneToMany(mappedBy = "user")
-	@JsonIgnore
-	private List<Authority> authorities;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "provider")
+	private AuthProvider provider;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "authority",
+				joinColumns = @JoinColumn(name = "user_id"),
+				inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
+
+	public User(String username, String password, String avatar, String fullname, String email, String phone, Integer gender, Integer status) {
+		this.username = username;
+		this.password = password;
+		this.avatar = avatar;
+		this.fullname = fullname;
+		this.email = email;
+		this.phone = phone;
+		this.gender = gender;
+		this.status = status;
+	}
+
+	//	@OneToMany(mappedBy = "user")
+//	@JsonIgnore
+//	private List<Authority> authorities;
 }
