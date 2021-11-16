@@ -17,7 +17,7 @@ public class SignupRequest {
     @NotBlank(message = "Password invalid!")
     @Length(message = "Password invalid!", min = 6, max = 45)
     private String password;
-    @NotBlank
+//    @NotBlank
     private String avatar;
     @NotNull(message = "Fullname invalid!")
     @NotBlank(message = "Fullname invalid!")
@@ -30,7 +30,7 @@ public class SignupRequest {
     @NotNull(message = "Phone invalid!")
     @NotBlank(message = "Phone invalid!")
     private String phone;
-    @NotNull(message = "Gender invalid!")
+//    @NotNull(message = "Gender invalid!")
     private Integer gender;
     @NotNull(message = "Status invalid!")
     private Integer status;

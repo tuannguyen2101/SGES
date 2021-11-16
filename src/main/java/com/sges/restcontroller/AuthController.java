@@ -8,6 +8,7 @@ import com.sges.dto.request.SignupRequest;
 import com.sges.dto.response.JwtResponse;
 import com.sges.dto.response.MessageResponse;
 import com.sges.dto.response.UserResponse;
+import com.sges.entity.AuthProvider;
 import com.sges.entity.ERole;
 import com.sges.entity.Role;
 import com.sges.entity.User;
@@ -50,7 +51,7 @@ public class AuthController {
     PasswordEncoder encoder;
 
     @Autowired
-    RoleRepo roleService;
+    RoleRepo roleRepo;
 
     @Autowired
     JwtHelper jwtHelper;
@@ -86,32 +87,33 @@ public class AuthController {
         Set<String> strRoles= signupRequest.getRole();
         Set<Role> roles= new HashSet<>();
         if (strRoles==null){
-            Role userRole = roleService.findByRole(ERole.USER)
+            Role userRole = roleRepo.findByRole(ERole.USER)
                     .orElseThrow(()->new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         }else {
             strRoles.forEach(role->{
                 switch (role) {
                     case "admin":
-                        Role adminRole = roleService.findByRole(ERole.ADMIN)
+                        Role adminRole = roleRepo.findByRole(ERole.ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
 
                         break;
                     case "user":
-                        Role userRole = roleService.findByRole(ERole.USER)
+                        Role userRole = roleRepo.findByRole(ERole.USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
 
                         break;
                     default:
-                        Role guestRole = roleService.findByRole(ERole.GUEST)
+                        Role guestRole = roleRepo.findByRole(ERole.GUEST)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(guestRole);
                 }
             });
         }
         user.setRoles(roles);
+        user.setProvider(AuthProvider.LOCAL);
         userRepo.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
@@ -121,16 +123,21 @@ public class AuthController {
         Authentication authentication= authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signinRequest.getUsername(),signinRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtHelper.generateJwtToken(authentication);
+        String token = jwtHelper.generateJwtToken(authentication);
 
         CustomUserDetail userDetail = (CustomUserDetail) authentication.getPrincipal();
         List<String> roles = userDetail.getAuthorities().stream()
                 .map(item->item.getAuthority())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
+        return ResponseEntity.ok(new JwtResponse(token,
                                                 userDetail.getId(),
                                                 userDetail.getUsername(),
+                                                userDetail.getFullname(),
+                                                userDetail.getAvatar(),
+                                                userDetail.getPhone(),
+                                                userDetail.getGender(),
+                                                userDetail.getStatus(),
                                                 userDetail.getEmail(),
                                                 roles));
     }
@@ -143,6 +150,7 @@ public class AuthController {
         return ResponseEntity.ok("Reset password code is send to your E-mail");
     }
 
+    // reset password by otpCode
     @GetMapping("/reset/{code}")
     public ResponseEntity<UserResponse> getPasswordResetCode(@PathVariable String code) {
         UserResponse user = authenticationMapper.findByOtpCode(code);

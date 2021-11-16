@@ -24,8 +24,21 @@ public class JwtHelper {
     private String jwtSecret;
 
     @Value("${bezkoder.app.jwtExpirationMs}")
-    private int jwtExpirationMs;
+    private long jwtExpirationMs;
 
+    public String createTokenByEmail(String email, String role){
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("role",role);
+        Date now = new Date();
+        Date validity = new Date(now.getTime()+ jwtExpirationMs * 1000);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS512,jwtSecret)
+                .compact();
+    }
     public String generateJwtToken(Authentication authentication) {
         Map<String,Object> claims = new HashMap<>();
         CustomUserDetail userPrincipal = (CustomUserDetail) authentication.getPrincipal();
@@ -38,9 +51,9 @@ public class JwtHelper {
 //                .compact();
     }
     private String doGenerateToken(Map<String, Object> claims, String subject) {
-
+        Date now = new Date();
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .setExpiration(new Date(now.getTime() + jwtExpirationMs * 1000))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
     }
 

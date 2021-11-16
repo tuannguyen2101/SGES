@@ -1,7 +1,11 @@
 package com.sges.securiry;
 
 import com.sges.jwt.AuthEntryPointJwt;
+import com.sges.jwt.JwtConfigurer;
+import com.sges.jwt.JwtHelper;
 import com.sges.jwt.JwtTokenFilter;
+import com.sges.securiry.auth2.CustomOAuth2UserService;
+import com.sges.securiry.auth2.OAuth2SuccessHandler;
 import com.sges.service.impl.CustomUserDetailService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -13,6 +17,7 @@ import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,6 +35,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     CustomUserDetailService customUserDetailService;
+
+    @Autowired
+    JwtConfigurer jwtConfigurer;
+
+    @Autowired
+    CustomOAuth2UserService customOAuth2UserService;
+
+    @Autowired
+    OAuth2SuccessHandler auth2SuccessHandler;
 
     @Bean
     public JwtTokenFilter authenticationJwtTokenFilter() {
@@ -49,6 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .setMatchingStrategy(MatchingStrategies.STRICT);
         return mapper;
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -72,10 +87,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests().antMatchers("/product/**","/api/auth/**").permitAll()
-                .antMatchers("/api/test/**").permitAll()
                 .anyRequest().authenticated().and()
                  .exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+//         login by OAuth2
+                http.oauth2Login().authorizationEndpoint().baseUri("/oauth2/authorize").and()
+                .userInfoEndpoint().userService(customOAuth2UserService).and()
+                .successHandler(auth2SuccessHandler).and()
+                .apply(jwtConfigurer);
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

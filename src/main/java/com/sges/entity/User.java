@@ -59,7 +59,7 @@ public class User implements Serializable {
 	@Column(name = "phone")
 	private String phone;
 
-	@NotNull(message = "Gender invalid!")
+//	@NotNull(message = "Gender invalid!")
 	@Column(name = "gender")
 	private Integer gender;
 
@@ -84,6 +84,10 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
 	private List<Reviews> reviews;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "provider")
+	private AuthProvider provider;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "authority",
