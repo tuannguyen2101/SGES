@@ -82,6 +82,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User updateOauth2User(User user, String provider, OAuth2UserInfo oAuth2UserInfo) {
-        return null;
+        user.setFullname(oAuth2UserInfo.getFirstName()+oAuth2UserInfo.getLastName());
+        user.setProvider(AuthProvider.valueOf(provider.toLowerCase()));
+        return userRepo.save(user);
     }
 }
