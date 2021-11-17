@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl extends GenericServiceImpl<User, Integer> implements UserService {
 
@@ -20,5 +22,25 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer> implement
     @Override
     public User findUserByEmail(String email) {
         return userRepo.findByEmail(email);
+    }
+
+    @Override
+    public User findByName(String name) {
+        return userRepo.findByUsername(name);
+    }
+
+    @Override
+    public User save(User user) {
+        return userRepo.save(user);
+    }
+
+    @Override
+    public boolean existByUserName(String username) {
+        return userRepo.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existByEmail(String email) {
+        return userRepo.existsByEmail(email);
     }
 }

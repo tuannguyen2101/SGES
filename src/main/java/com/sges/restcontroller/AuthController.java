@@ -2,9 +2,7 @@ package com.sges.restcontroller;
 
 import com.sges.config.AuthenticationMapper;
 import com.sges.dto.CustomUserDetail;
-import com.sges.dto.request.ForgotPasswordRequest;
-import com.sges.dto.request.SigninRequest;
-import com.sges.dto.request.SignupRequest;
+import com.sges.dto.request.*;
 import com.sges.dto.response.JwtResponse;
 import com.sges.dto.response.MessageResponse;
 import com.sges.dto.response.UserResponse;
@@ -16,9 +14,11 @@ import com.sges.exception.ApiRequestException;
 import com.sges.exception.PasswordConfirmException;
 import com.sges.exception.PasswordException;
 import com.sges.jwt.JwtHelper;
+import com.sges.jwt.JwtTokenFilter;
 import com.sges.repo.RoleRepo;
 import com.sges.repo.UserRepo;
 import com.sges.service.RoleService;
+import com.sges.service.UserService;
 import com.sges.service.impl.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,12 +28,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -54,7 +57,13 @@ public class AuthController {
     RoleRepo roleRepo;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     JwtHelper jwtHelper;
+
+    @Autowired
+    JwtTokenFilter jwtTokenFilter;
 
     @Autowired
     CustomUserDetailService customUserDetailService;
@@ -169,5 +178,79 @@ public class AuthController {
             throw new PasswordException("Passwords do not match.");
         }
         return ResponseEntity.ok(authenticationMapper.passwordReset(passwordReset.getEmail(), passwordReset.getPassword()));
+    }
+
+    @PutMapping("/changePassword")
+    public ResponseEntity<Object> changePassword(HttpServletRequest request, @Valid @RequestBody ChangePasswordRequest changePasswordRequest){
+        String jwt = jwtTokenFilter.parseJwt(request);
+        String username= jwtHelper.getUserNameFromJwtToken(jwt);
+        User user;
+        try {
+            user = userService.findByName(username);
+            if (user==null){
+                return new ResponseEntity<>("User Not Found with -> username"+username,HttpStatus.OK);
+            }
+            boolean matches= encoder.matches(changePasswordRequest.getCurrentPassword(),user.getPassword());
+            if (changePasswordRequest.getNewPassword()!=null){
+                if (matches){
+                    user.setPassword(encoder.encode(changePasswordRequest.getNewPassword()));
+                    userService.save(user);
+                }else {
+                    return new ResponseEntity<>(new MessageResponse("Password change failed"),HttpStatus.OK);
+                }
+            }
+            return new ResponseEntity<>(new MessageResponse("Change password successfully"),HttpStatus.OK);
+        }catch (UsernameNotFoundException e){
+            return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/changeAvatar")
+    public ResponseEntity<Object> changeAvatar(HttpServletRequest request, @Valid @RequestBody ChangeAvatar changeAvatar){
+        String jwt = jwtTokenFilter.parseJwt(request);
+        String username= jwtHelper.getUserNameFromJwtToken(jwt);
+        User user;
+        try {
+            if (changeAvatar.getAvatar()==null){
+                return new ResponseEntity<>(new MessageResponse("No success"), HttpStatus.OK);
+            }else {
+                user = userService.findByName(username);
+                if (user==null){
+                    return new ResponseEntity<>("User Not Found with -> username"+username,HttpStatus.OK);
+                }
+                user.setAvatar(changeAvatar.getAvatar());
+                userService.save(user);
+            }
+            return new ResponseEntity<>(new MessageResponse("Change success"),HttpStatus.OK);
+        }catch (UsernameNotFoundException e){
+            return new ResponseEntity<>(new MessageResponse(e.getMessage()),HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/changeProfile")
+    public ResponseEntity<Object> changProfile(HttpServletRequest request,@Valid @RequestBody ChangeProfile changeProfile){
+        String jwt = jwtTokenFilter.parseJwt(request);
+        String username= jwtHelper.getUserNameFromJwtToken(jwt);
+        User user;
+        try {
+            if(userService.existByUserName(changeProfile.getUsername())){
+                return new ResponseEntity<>(new MessageResponse("No user"), HttpStatus.OK);
+            }
+            if(userService.existByEmail(changeProfile.getEmail())){
+                return new ResponseEntity<>(new MessageResponse("No email"), HttpStatus.OK);
+            }
+            user = userService.findByName(username);
+            if (user==null){
+                return new ResponseEntity<>("User Not Found with -> username"+username,HttpStatus.OK);
+            }
+            user.setUsername(changeProfile.getUsername());
+            user.setFullname(changeProfile.getFullname());
+            user.setPhone(changeProfile.getPhone());
+            user.setGender(changeProfile.getGender());
+            user.setStatus(changeProfile.getStatus());
+            user.setEmail(changeProfile.getEmail());
+            userService.save(user);
+            return new ResponseEntity<>(new MessageResponse("Change success"), HttpStatus.OK);
+        } catch (UsernameNotFoundException e){
+            return new ResponseEntity<>(new MessageResponse(e.getMessage()),HttpStatus.NOT_FOUND );
+        }
     }
 }

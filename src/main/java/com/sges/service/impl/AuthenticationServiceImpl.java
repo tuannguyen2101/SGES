@@ -76,7 +76,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setFullname(oAuth2UserInfo.getFirstName()+oAuth2UserInfo.getLastName());
         user.setStatus(1);
         user.setRoles(roles);
-        user.setProvider(AuthProvider.valueOf(provider.toLowerCase()));
+        user.setProvider(AuthProvider.valueOf(provider));
         return userRepo.save(user);
     }
 
