@@ -113,7 +113,7 @@ public class AuthController {
             });
         }
         user.setRoles(roles);
-        user.setProvider(AuthProvider.LOCAL);
+        user.setProvider(AuthProvider.local);
         userRepo.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
