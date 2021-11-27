@@ -72,6 +72,7 @@ public class GenericController<T, E> {
 		}
 	}
 
+
 	@PostMapping("")
 	@ResponseBody
 //	@PreAuthorize(value="isAuthenticated()")

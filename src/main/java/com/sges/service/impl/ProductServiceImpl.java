@@ -2,6 +2,7 @@ package com.sges.service.impl;
 
 import com.sges.dto.OrderBy;
 import com.sges.repo.ProductRepo;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -47,6 +48,8 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
         return productRepo.getBySubCate_SupCate_Id(id, pageable);
     }
 
+
+
     @Override
     public List<Product> filter(List<String> productName, List<Double> prices, boolean sortByPrice) {
             List<Product> productsList = new ArrayList<>();
@@ -76,4 +79,20 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
 
         return productsList;
     }
+
+    @Override
+    public Page<Product> getProductList(Pageable pageable, String productName, Double priceStart,Double priceEnd,Integer viewStart, Integer viewEnd, Integer sub_cate_id) {
+        return productRepo.getListProductByCategoryOrProductNameContaining(pageable,sub_cate_id,priceStart,priceEnd,viewStart,viewEnd,productName);
+    }
+
+
+
+
+//    @Override
+//    public Page<Product> getProductList(Pageable pageable,String productName, Integer sub_cate_id) {
+//       return productRepo.getListProductByCategoryOrProductNameContaining(pageable,sub_cate_id,productName);
+//    }
+
+
+
 }

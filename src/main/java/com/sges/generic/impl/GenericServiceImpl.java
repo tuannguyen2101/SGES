@@ -23,11 +23,13 @@ public class GenericServiceImpl<T, ID> implements BaseService<T, ID> {
         return this.jpaRepository.findAll();
     }
 
+
     @Override
     public Page<T> findPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return this.jpaRepository.findAll(pageable);
     }
+
 
     @Override
     public T findById(ID id) {
