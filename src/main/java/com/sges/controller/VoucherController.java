@@ -13,4 +13,7 @@ public class VoucherController extends GenericController<Voucher, Integer>{
     public VoucherController(BaseService<Voucher, Integer> baseService) {
         super(baseService);
     }
+
+
+
 }

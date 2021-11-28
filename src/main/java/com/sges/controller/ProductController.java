@@ -3,6 +3,7 @@ package com.sges.controller;
 import com.sges.dto.OrderBy;
 import com.sges.dto.ResponseDTO;
 import com.sges.generic.BaseService;
+import com.sges.repo.ProductDetailRepo;
 import com.sges.service.ProductService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -22,10 +23,12 @@ import java.util.List;
 public class ProductController extends GenericController<Product, Integer>{
 
     private final ProductService productService;
+    private final ProductDetailRepo productDetailRepo;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ProductDetailRepo productDetailRepo) {
         super(productService);
         this.productService = productService;
+        this.productDetailRepo = productDetailRepo;
     }
 
 //    @PostMapping("/getNewProducts")
@@ -82,5 +85,16 @@ public class ProductController extends GenericController<Product, Integer>{
         responseDTO.setData(productService.getByCategoryId(id, page));
         return new ResponseEntity<ResponseDTO<List<Product>>>(responseDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/getSize/{id}")
+    public List<String> getSize (@PathVariable("id") int id) {
+        return this.productDetailRepo.getSize(id);
+    }
+
+    @GetMapping("/getColor/{id}")
+    public List<String> getColor (@PathVariable("id") int id) {
+        return this.productDetailRepo.getColor(id);
+    }
+
 
 }
